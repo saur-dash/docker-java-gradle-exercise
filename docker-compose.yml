@@ -1,0 +1,81 @@
+services:
+  app-main:
+    image: 178.62.0.73:8083/java-gradle-app:1.0
+    ports:
+      - "8080:8080"
+    container_name: app-main
+    environment:
+      DB_USER_FILE: /run/secrets/db_user
+      DB_PWD_FILE: /run/secrets/db_pwd
+      DB_SERVER_FILE: /run/secrets/db_server
+      DB_NAME_FILE: /run/secrets/db_name
+    secrets:
+      - db_user
+      - db_pwd
+      - db_server
+      - db_name
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: mysql:8.4
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_pwd
+      MYSQL_DATABASE_FILE: /run/secrets/db_name
+      MYSQL_USER_FILE: /run/secrets/db_user
+      MYSQL_PASSWORD_FILE: /run/secrets/db_pwd
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "mysqladmin ping \
+        -h localhost \
+        -uroot \
+        -p$$(cat /run/secrets/db_root_pwd) \
+        --silent"
+      ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
+    restart: always
+    secrets:
+      - db_root_pwd
+      - db_name
+      - db_user
+      - db_pwd
+
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    container_name: phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST_FILE: /run/secrets/db_server
+      PMA_USER_FILE: /run/secrets/db_user
+      PMA_PASSWORD_FILE: /run/secrets/db_pwd
+    depends_on:
+      - mysql
+    secrets:
+      - db_server
+      - db_user
+      - db_pwd
+
+volumes:
+  mysql-data:
+
+secrets:
+  db_root_pwd:
+    file: ./secrets/db_root_pwd.txt
+  db_user:
+    file: ./secrets/db_user.txt
+  db_pwd:
+    file: ./secrets/db_pwd.txt
+  db_server:
+    file: ./secrets/db_server.txt
+  db_name:
+    file: ./secrets/db_name.txt
