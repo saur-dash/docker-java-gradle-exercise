@@ -1,0 +1,9 @@
+# Ignore files and directories that should not be included in the Docker image
+.git
+.gradle
+build
+out
+.idea
+*.iml
+*.log
+secrets
