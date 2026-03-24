@@ -118,11 +118,9 @@ docker compose down
 
 To simulate a real-world CD pipeline this project was deployed to a cloud server (DigitalOcean Droplet) using the following steps:
 
-1. **Provisioned a cloud server** — launched a Droplet on DigitalOcean and configured firewall rules to permit SSH and traffic on ports `8080` and `8888`.
+1. **Provisioned a cloud server** — launched a Droplet on DigitalOcean and configured firewall rules to permit SSH on port `22` and inbound traffic on ports `8080`, `8081` and `8888`.
 2. **Installed Docker** — installed and started Docker as a non-root user.
 3. **Launched Nexus** — ran a Sonatype Nexus container with a named volume for data persistence, then configured a Docker-hosted repository and a scoped user role.
 4. **Published the image** — built the application Docker image locally and pushed it to the private Nexus registry.
 5. **Deployed** — cloned this repository on the cloud server, populated the secrets files, and ran `docker compose up -d`.
 6. **Verified** — confirmed the application and phpMyAdmin were accessible on their published ports.
-
-
