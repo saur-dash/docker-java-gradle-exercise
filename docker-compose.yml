@@ -54,6 +54,7 @@ services:
     container_name: phpmyadmin
     ports:
       - "8888:80"
+
     environment:
       PMA_HOST_FILE: /run/secrets/db_server
       PMA_USER_FILE: /run/secrets/db_user
