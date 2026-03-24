@@ -1,6 +1,6 @@
 services:
   app-main:
-    image: 178.62.0.73:8083/java-gradle-app:1.0
+    image: <registry-ip>:<registry-port>/java-gradle-app:1.0
     ports:
       - "8080:8080"
     container_name: app-main
