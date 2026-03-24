@@ -1,5 +1,7 @@
 #### This project is for the Devops bootcamp exercise for 
-#### "Containers - Docker" 
+#### "Containers - Docker"
+
+# Containers with Docker — Java/Gradle Spring Boot Application
 
 This repository supports my personal learning in the DevOps field, specifically around containerisation with Docker. It demonstrates building a Java Spring Boot application as a Docker image and running it alongside its dependent services using Docker Compose.
 
